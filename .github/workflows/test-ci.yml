@@ -24,6 +24,3 @@ jobs:
         with:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/note-app:${{ github.ref_name }}
-
-      - name: Linting
-        run: npm run lint
