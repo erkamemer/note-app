@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Notepad</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        #notepad {
+            width: 100%;
+            height: 300px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #fff;
+            resize: none;
+        }
+        #buttons {
+            margin-top: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            margin-right: 5px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Online Notepad</h1>
+    <textarea id="notepad" placeholder="Notlarınızı buraya yazın..."></textarea>
+    <div id="buttons">
+        <button onclick="saveNote()">Kaydet</button>
+        <button onclick="loadNote()">Yükle</button>
+    </div>
+
+    <script>
+        function saveNote() {
+            const note = document.getElementById('notepad').value;
+            localStorage.setItem('note', note);
+            alert('Not kaydedildi!');
+        }
+
+        function loadNote() {
+            const note = localStorage.getItem('note');
+            if (note) {
+                document.getElementById('notepad').value = note;
+            } else {
+                alert('Henüz kaydedilmiş bir not yok.');
+            }
+        }
+    </script>
+
+</body>
+</html>
