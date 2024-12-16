@@ -23,9 +23,9 @@ jobs:
           run: |
             if [ "${{ github.event.inputs.rollback_version }}" ]; then
               echo "Rollback version specified: ${{ github.event.inputs.rollback_version }}"
-              echo "::set-output name=VERSION::${{ github.event.inputs.rollback_version }}"
+              echo "VERSION=${{ github.event.inputs.rollback_version }}" >> $GITHUB_ENV
             else
-              echo "::set-output name=VERSION::${GITHUB_REF#refs/tags/}"
+              echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
             fi
   
         - name: Login to Docker Hub
@@ -41,8 +41,7 @@ jobs:
             context: .
             push: true
             tags: |
-              ${{ secrets.DOCKER_USERNAME }}/note-app:latest
-              ${{ secrets.DOCKER_USERNAME }}/note-app:${{ steps.get_version.outputs.VERSION }}
+              ${{ secrets.DOCKER_USERNAME }}/note-app:${{ env.VERSION }}
   
         - name: Deploy to production server
           uses: appleboy/ssh-action@master
@@ -51,8 +50,9 @@ jobs:
             username: ${{ secrets.SERVER_USERNAME }}
             key: ${{ secrets.SERVER_SSH_KEY }}
             script: |
-              docker pull ${{ secrets.DOCKER_USERNAME }}/note-app:${{ steps.get_version.outputs.VERSION }}
+              docker pull ${{ secrets.DOCKER_USERNAME }}/note-app:${{ env.VERSION }}
               docker stop prod-note-app || true
               docker rm prod-note-app || true
-              docker run -d --name prod-note-app -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/note-app:${{ steps.get_version.outputs.VERSION }}
+              docker run -d --name prod-note-app -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/note-app:${{ env.VERSION }}
+
   
