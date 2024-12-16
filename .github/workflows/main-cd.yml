@@ -41,8 +41,9 @@ jobs:
             context: .
             push: true
             tags: |
-              ${{ secrets.DOCKER_USERNAME }}/note-app:${{ env.VERSION }}
-  
+              ${{ secrets.DOCKER_USERNAME }}/note-app:latest
+              ${{ secrets.DOCKER_USERNAME }}/note-app:${{ github.ref_name }}  # Use branch name or tag
+
         - name: Deploy to production server
           uses: appleboy/ssh-action@master
           with:
@@ -50,9 +51,7 @@ jobs:
             username: ${{ secrets.SERVER_USERNAME }}
             key: ${{ secrets.SERVER_SSH_KEY }}
             script: |
-              docker pull ${{ secrets.DOCKER_USERNAME }}/note-app:${{ env.VERSION }}
+              docker pull ${{ secrets.DOCKER_USERNAME }}/note-app:${{ github.ref_name }}  # Use branch name or tag
               docker stop prod-note-app || true
               docker rm prod-note-app || true
-              docker run -d --name prod-note-app -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/note-app:${{ env.VERSION }}
-
-  
+              docker run -d --name prod-note-app -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/note-app:${{ github.ref_name }}  # Use branch name or tag
