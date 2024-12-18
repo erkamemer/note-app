@@ -35,4 +35,4 @@ jobs:
             docker pull ${{ secrets.DOCKER_USERNAME }}/note-app:${{ github.ref_name }}
             docker stop note-app || true
             docker rm note-app || true
-            docker run -d --name note-app -p 8081:8080 ${{ secrets.DOCKER_USERNAME }}/note-app:${{ github.ref_name }}
+            docker run -d --name note-app -p 8081:80 ${{ secrets.DOCKER_USERNAME }}/note-app:${{ github.ref_name }}
