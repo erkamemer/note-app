@@ -4,7 +4,8 @@ pipeline {
     environment {
         DOCKER_CREDENTIALS = credentials('docker-credentials')
         SERVER_CREDENTIALS = credentials('server-credentials')
-        SERVER_IP = '35.205.110.31' 
+        SERVER_IP = '35.205.110.31'
+    }
 
     stages {
         stage('Set Version') {
