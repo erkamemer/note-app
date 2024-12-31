@@ -12,15 +12,11 @@ pipeline {
         stage('Set Version') {
             steps {
                 script {
-                    if (env.rollback_version) {
-                        echo "Rollback version specified: ${env.rollback_version}"
-                        env.VERSION = env.rollback_version
-                    } else {
-                        env.VERSION = env.GIT_TAG_NAME
+                    env.VERSION = env.rollback_version ?: 'latest'
                     }
                 }
             }
-        }
+        
 
         stage('Login to Docker Hub') {
             steps {
