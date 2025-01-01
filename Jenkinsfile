@@ -43,7 +43,7 @@ pipeline {
             steps {
                 script {
                     sh """
-                        ssh -i $SERVER_CREDENTIALS $SERVER_CREDENTIALS_USR@$SERVER_IP << EOF
+                        ssh -i $SERVER_CREDENTIALS $SERVER_CREDENTIALS_USR@$SERVER_IP << 'EOF'
                             echo "Pulling the Docker image..."
                             docker pull $DOCKER_CREDENTIALS_USR/new-note-app:latest
 
@@ -53,7 +53,9 @@ pipeline {
 
                             echo "Running the new container..."
                             docker run -d --name $CONTAINER_NAME -p $APP_PORT:80 $DOCKER_CREDENTIALS_USR/new-note-app:latest
-                        EOF
+
+                            echo "Deployment completed successfully!"
+EOF
                     """
                 }
             }
