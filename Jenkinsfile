@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     environment {
+        PATH = "${env.PATH}:/usr/local/bin"
         DOCKER_CREDENTIALS = credentials('docker-credentials')
         SERVER_CREDENTIALS = credentials('server-credentials')
         SERVER_IP = '35.205.110.31'
